@@ -6,7 +6,7 @@ import * as next from 'next'
 
 import initSession from './init-session'
 
-const port = parseInt(process.env.PORT, 10) || 3002
+const port = parseInt(process.env.PORT, 10)
 const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({dev})
 const handle = nextApp.getRequestHandler()

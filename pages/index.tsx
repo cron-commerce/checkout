@@ -10,7 +10,7 @@ interface Props {
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
     return {
-      cart: JSON.parse(decodeURIComponent(req.session.cart)),
+      cart: JSON.parse(decodeURIComponent(req.session.cart || 'null')),
       shopName: req.session.shopName,
     }
   }
