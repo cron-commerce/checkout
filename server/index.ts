@@ -1,3 +1,5 @@
+import 'isomorphic-unfetch'
+
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
 import * as logger from 'koa-logger'
