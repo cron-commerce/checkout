@@ -1,3 +1,12 @@
+interface Account {
+  id: number,
+  email: string,
+}
+
+interface Address {
+  address1: string,
+}
+
 interface Item {
   id: number,
   price: number,
@@ -6,9 +15,4 @@ interface Item {
 
 interface Cart {
   items: Item[],
-}
-
-interface User {
-  id: number,
-  email: string,
 }
