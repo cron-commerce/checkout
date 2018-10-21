@@ -7,3 +7,8 @@ interface Item {
 interface Cart {
   items: Item[],
 }
+
+interface User {
+  id: number,
+  email: string,
+}

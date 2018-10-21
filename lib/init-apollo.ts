@@ -1,6 +1,9 @@
 import {ApolloClient, HttpLink, InMemoryCache} from 'apollo-boost'
+import getConfig from 'next/config'
 
 import isBrowser from './is-browser'
+
+const {publicRuntimeConfig} = getConfig()
 
 let apolloClient = null
 
@@ -9,7 +12,7 @@ const create = (initialState) => new ApolloClient({
   connectToDevTools: isBrowser,
   link: new HttpLink({
     credentials: 'same-origin',
-    uri: process.env.CORE_GRAPHQL_URL,
+    uri: publicRuntimeConfig.CORE_GRAPHQL_URL,
   }),
   ssrMode: !isBrowser,
 })
