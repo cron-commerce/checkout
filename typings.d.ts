@@ -1,10 +1,12 @@
-interface Account {
-  id: number,
-  email: string,
-}
-
 interface Address {
   address1: string,
+  address2: string,
+  city: string,
+  country: string,
+  firstName: string,
+  lastName: string,
+  province: string,
+  zip: string,
 }
 
 interface Item {

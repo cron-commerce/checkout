@@ -2,19 +2,17 @@ import {Component} from 'react'
 
 import '../styles/index.scss'
 
-import Account from '../components/account'
-import Address from '../components/address'
+import CreditCardForm from '../components/credit-card-form'
 import Header from '../components/header'
 import Items from '../components/items'
-import Nav from '../components/nav'
 import Prices from '../components/prices'
+import ShippingAddressForm from '../components/shipping-address-form'
 
 interface Props {
   cart: Cart,
   shopName: string,
 }
 
-export type setAccount = (account: Account) => any
 export type setAddress = (address: Address) => any
 
 export default class Checkout extends Component<Props> {
@@ -26,10 +24,8 @@ export default class Checkout extends Component<Props> {
   }
 
   public state: {
-    account: Account,
     shippingAddress: Address,
   } = {
-    account: null,
     shippingAddress: null,
   }
 
@@ -37,9 +33,7 @@ export default class Checkout extends Component<Props> {
     return <div className='grid-x'>
       <div className='cell small-12 medium-7'>
         <Header />
-        <Account setAccount={this.setAccount} />
-        <Address setAddress={this.setAddress} />
-        <Nav />
+        {!this.state.shippingAddress ? <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> : <CreditCardForm />}
       </div>
 
       <div className='cell show-for-medium medium-5'>
@@ -50,6 +44,5 @@ export default class Checkout extends Component<Props> {
     </div>
   }
 
-  private setAddress: setAddress = (address: Address) => this.setState({...this.state, address})
-  private setAccount: setAccount = (account: Account) => this.setState({...this.state, account})
+  private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})
 }
