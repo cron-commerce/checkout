@@ -7,6 +7,7 @@ import Header from '../components/header'
 import Items from '../components/items'
 import Prices from '../components/prices'
 import ShippingAddressForm from '../components/shipping-address-form'
+import ShippingRateChooser from '../components/shipping-rate-chooser'
 
 interface Props {
   cart: Cart,
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export type setAddress = (address: Address) => any
+export type setShippingRate = (shippingRate: number) => any
 
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
@@ -25,15 +27,17 @@ export default class Checkout extends Component<Props> {
 
   public state: {
     shippingAddress: Address,
+    shippingRate: number,
   } = {
     shippingAddress: null,
+    shippingRate: null,
   }
 
   public render() {
     return <div className='grid-x'>
       <div className='cell small-12 medium-7'>
         <Header />
-        {!this.state.shippingAddress ? <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> : <CreditCardForm />}
+        {this.renderStep()}
       </div>
 
       <div className='cell show-for-medium medium-5'>
@@ -44,5 +48,12 @@ export default class Checkout extends Component<Props> {
     </div>
   }
 
+  private renderStep = () => {
+    if (!this.state.shippingAddress) { return <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> }
+    if (!this.state.shippingRate) { return <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} /> }
+    return <CreditCardForm />
+  }
+
   private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})
+  private setShippingRate: setShippingRate = (shippingRate: number) => this.setState({...this.state, shippingRate})
 }

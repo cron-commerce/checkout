@@ -7,7 +7,7 @@ interface Props {
   setShippingAddress: setAddress,
 }
 
-export default class AddressForm extends Component<Props> {
+export default class ShippingAddressForm extends Component<Props> {
   public state = {
     inputs: {
       address1: '',
