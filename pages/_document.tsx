@@ -12,6 +12,7 @@ export default class Document extends NextDocument {
         <body>
           <Main />
           <NextScript />
+          <script src='https://js.stripe.com/v3/' />
         </body>
       </html>
     )

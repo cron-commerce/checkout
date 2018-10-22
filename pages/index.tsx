@@ -2,9 +2,9 @@ import {Component} from 'react'
 
 import '../styles/index.scss'
 
-import CreditCardForm from '../components/credit-card-form'
 import Header from '../components/header'
 import Items from '../components/items'
+import PaymentChooser from '../components/payment-chooser'
 import Prices from '../components/prices'
 import ShippingAddressForm from '../components/shipping-address-form'
 import ShippingRateChooser from '../components/shipping-rate-chooser'
@@ -57,7 +57,7 @@ export default class Checkout extends Component<Props> {
         shopName={this.props.shopName}
       />
     }
-    return <CreditCardForm shopName={this.props.shopName} />
+    return <PaymentChooser shopName={this.props.shopName} />
   }
 
   private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})

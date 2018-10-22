@@ -1,28 +1,21 @@
-import gql from 'graphql-tag'
 import {Component} from 'react'
-import {Query} from 'react-apollo'
+import {CardElement, injectStripe} from 'react-stripe-elements'
 
-interface Props {
-  shopName: string,
-}
-
-const QUERY = gql`
-  query shop($name: String!) {
-    shop(name: $name) {
-      stripePublishableKey
-    }
-  }
-`
-
-export default class CreditCardForm extends Component<Props> {
+class CreditCardForm extends Component<{}> {
   public render() {
-    return <Query query={QUERY} variables={{name: this.props.shopName}}>
-      {({data, loading, error}) => {
-        if (loading) { return <div>loading...</div> }
-        if (error) { return <div>error</div> }
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <CardElement />
+        <button className='button' type='submit'>Confirm order</button>
+      </form>
+    );
+  }
 
-        return <div>{JSON.stringify(data)}</div>
-      }}
-    </Query>
+  private handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log(this.props)
+    // create token to pass to server
   }
 }
+
+export default injectStripe(CreditCardForm)
