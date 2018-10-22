@@ -2,6 +2,7 @@ import {Component} from 'react'
 
 import '../styles/index.scss'
 
+import Confirm from '../components/confirm'
 import Header from '../components/header'
 import Items from '../components/items'
 import PaymentChooser from '../components/payment-chooser'
@@ -16,6 +17,7 @@ interface Props {
 
 export type setAddress = (address: Address) => any
 export type setShippingRate = (shippingRate: ShippingRate) => any
+export type SetStripeToken = (strikeToken: string) => any
 
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
@@ -28,9 +30,11 @@ export default class Checkout extends Component<Props> {
   public state: {
     shippingAddress: Address,
     shippingRate: ShippingRate,
+    stripeToken: string,
   } = {
     shippingAddress: null,
     shippingRate: null,
+    stripeToken: null,
   }
 
   public render() {
@@ -50,16 +54,12 @@ export default class Checkout extends Component<Props> {
 
   private renderStep = () => {
     if (!this.state.shippingAddress) { return <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> }
-    if (!this.state.shippingRate) {
-      return <ShippingRateChooser
-        setShippingRate={this.setShippingRate}
-        shippingAddress={this.state.shippingAddress}
-        shopName={this.props.shopName}
-      />
-    }
-    return <PaymentChooser shopName={this.props.shopName} />
+    if (!this.state.shippingRate) { return <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} /> }
+    if (!this.state.stripeToken) { return <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} /> }
+    return <Confirm />
   }
 
-  private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})
-  private setShippingRate: setShippingRate = (shippingRate: ShippingRate) => this.setState({...this.state, shippingRate})
+  private setShippingAddress: setAddress = shippingAddress => this.setState({...this.state, shippingAddress})
+  private setShippingRate: setShippingRate = shippingRate => this.setState({...this.state, shippingRate})
+  private setStripeToken: SetStripeToken = stripeToken => this.setState({...this.state, stripeToken})
 }

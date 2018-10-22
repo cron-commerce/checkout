@@ -3,9 +3,11 @@ import {Component} from 'react'
 import {Query} from 'react-apollo'
 import {Elements, StripeProvider} from 'react-stripe-elements'
 
+import {SetStripeToken} from '../pages/index'
 import CreditCardForm from './credit-card-form'
 
 interface Props {
+  setStripeToken: SetStripeToken,
   shopName: string,
 }
 
@@ -26,7 +28,7 @@ export default class PaymentChooser extends Component<Props> {
 
         return <StripeProvider apiKey={data.shop.stripePublishableKey}>
           <Elements>
-            <CreditCardForm />
+            <CreditCardForm setStripeToken={this.props.setStripeToken} />
           </Elements>
         </StripeProvider>
       }}

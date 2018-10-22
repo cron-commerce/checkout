@@ -1,7 +1,14 @@
 import {Component} from 'react'
 import {CardElement, injectStripe} from 'react-stripe-elements'
 
-class CreditCardForm extends Component<{}> {
+import {SetStripeToken} from '../pages/index'
+
+interface Props {
+  setStripeToken: SetStripeToken,
+  stripe: any,
+}
+
+class CreditCardForm extends Component<Props> {
   public render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -11,10 +18,10 @@ class CreditCardForm extends Component<{}> {
     );
   }
 
-  private handleSubmit = (e: React.FormEvent) => {
+  private handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(this.props)
-    // create token to pass to server
+    const res = await this.props.stripe.createToken()
+    this.props.setStripeToken(res.token.id)
   }
 }
 
