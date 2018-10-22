@@ -50,7 +50,13 @@ export default class Checkout extends Component<Props> {
 
   private renderStep = () => {
     if (!this.state.shippingAddress) { return <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> }
-    if (!this.state.shippingRate) { return <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} /> }
+    if (!this.state.shippingRate) {
+      return <ShippingRateChooser
+        setShippingRate={this.setShippingRate}
+        shippingAddress={this.state.shippingAddress}
+        shopName={this.props.shopName}
+      />
+    }
     return <CreditCardForm />
   }
 
