@@ -15,7 +15,7 @@ interface Props {
 }
 
 export type setAddress = (address: Address) => any
-export type setShippingRate = (shippingRate: number) => any
+export type setShippingRate = (shippingRate: ShippingRate) => any
 
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
@@ -27,7 +27,7 @@ export default class Checkout extends Component<Props> {
 
   public state: {
     shippingAddress: Address,
-    shippingRate: number,
+    shippingRate: ShippingRate,
   } = {
     shippingAddress: null,
     shippingRate: null,
@@ -61,5 +61,5 @@ export default class Checkout extends Component<Props> {
   }
 
   private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})
-  private setShippingRate: setShippingRate = (shippingRate: number) => this.setState({...this.state, shippingRate})
+  private setShippingRate: setShippingRate = (shippingRate: ShippingRate) => this.setState({...this.state, shippingRate})
 }

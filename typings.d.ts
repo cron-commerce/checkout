@@ -18,3 +18,11 @@ interface Item {
 interface Cart {
   items: Item[],
 }
+
+interface ShippingRate {
+  title: string,
+  code: string,
+  price: number,
+  description: string,
+  currency: string,
+}
