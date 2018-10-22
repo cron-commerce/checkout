@@ -57,7 +57,7 @@ export default class Checkout extends Component<Props> {
         shopName={this.props.shopName}
       />
     }
-    return <CreditCardForm />
+    return <CreditCardForm shopName={this.props.shopName} />
   }
 
   private setShippingAddress: setAddress = (shippingAddress: Address) => this.setState({...this.state, shippingAddress})
