@@ -1,29 +1,35 @@
 import {Component} from 'react'
 import {CardElement, injectStripe} from 'react-stripe-elements'
 
-import {SetStripeToken} from '../pages/index'
+import {CheckoutContext, SetStripeToken} from '../pages/index'
 
 interface Props {
-  setStripeToken: SetStripeToken,
   stripe: any,
 }
 
 class CreditCardForm extends Component<Props> {
   public render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <fieldset>
-          <legend className='h2'>Credit Card</legend>
-          <CardElement />
-        </fieldset>
-      </form>
-    );
+    return <CheckoutContext.Consumer>
+      {({setStripeToken}) => {
+        return <form onSubmit={this.handleSubmit(setStripeToken)}>
+          <fieldset>
+            <legend className='h2'>Credit Card</legend>
+            <CardElement />
+          </fieldset>
+          <button className='button' type='submit'>Submit</button>
+        </form>
+      }}
+    </CheckoutContext.Consumer>
   }
 
-  private handleSubmit = async (e: React.FormEvent) => {
+  private handleSubmit = (setStripeToken: SetStripeToken) => async (e: React.FormEvent) => {
     e.preventDefault()
-    const res = await this.props.stripe.createToken()
-    this.props.setStripeToken(res.token.id)
+    try {
+      const res = await this.props.stripe.createToken()
+      setStripeToken(res.token.id)
+    } catch (err) {
+      alert('There was an error')
+    }
   }
 }
 

@@ -3,13 +3,8 @@ import {Component} from 'react'
 import {Query} from 'react-apollo'
 import {Elements, StripeProvider} from 'react-stripe-elements'
 
-import {SetStripeToken} from '../pages/index'
+import {CheckoutContext} from '../pages/index'
 import CreditCardForm from './credit-card-form'
-
-interface Props {
-  setStripeToken: SetStripeToken,
-  shopName: string,
-}
 
 const QUERY = gql`
   query shop($name: String!) {
@@ -19,7 +14,7 @@ const QUERY = gql`
   }
 `
 
-export default class PaymentChooser extends Component<Props> {
+export default class PaymentChooser extends Component<{}> {
   public state = {
     shouldRenderStripe: false,
   }
@@ -32,17 +27,24 @@ export default class PaymentChooser extends Component<Props> {
     // stripe cannot do SSR
     if (!this.state.shouldRenderStripe) { return null }
 
-    return <Query query={QUERY} variables={{name: this.props.shopName}}>
-      {({data, loading, error}) => {
-        if (loading) { return <div>loading...</div> }
-        if (error) { return <div>error</div> }
+    return <CheckoutContext.Consumer>
+      {({shippingRate, shopName, stripeToken}) => {
+        if (!shippingRate) { return <div>Select shipping rate</div> }
+        if (stripeToken) { return <div>Using stripe token {stripeToken}</div> }
 
-        return <StripeProvider apiKey={data.shop.stripePublishableKey}>
-          <Elements>
-            <CreditCardForm setStripeToken={this.props.setStripeToken} />
-          </Elements>
-        </StripeProvider>
+        return <Query query={QUERY} variables={{name: shopName}}>
+          {({data, loading, error}) => {
+            if (loading) { return <div>loading...</div> }
+            if (error) { return <div>error</div> }
+
+            return <StripeProvider apiKey={data.shop.stripePublishableKey}>
+              <Elements>
+                <CreditCardForm />
+              </Elements>
+            </StripeProvider>
+          }}
+        </Query>
       }}
-    </Query>
+    </CheckoutContext.Consumer>
   }
 }

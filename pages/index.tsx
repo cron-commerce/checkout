@@ -26,9 +26,11 @@ interface CheckoutContextInterface {
   setCustomerEmail: SetCustomerEmail,
   setShippingAddress: SetAddress,
   setShippingRate: SetShippingRate,
+  setStripeToken: SetStripeToken,
   shippingAddress: Address,
   shippingRate: ShippingRate,
   shopName: string,
+  stripeToken: string,
 }
 
 export const CheckoutContext = createContext<CheckoutContextInterface>({} as any)
@@ -59,9 +61,11 @@ export default class Checkout extends Component<Props> {
       setCustomerEmail: this.setCustomerEmail,
       setShippingAddress: this.setShippingAddress,
       setShippingRate: this.setShippingRate,
+      setStripeToken: this.setStripeToken,
       shippingAddress: this.state.shippingAddress,
       shippingRate: this.state.shippingRate,
       shopName: this.props.shopName,
+      stripeToken: this.state.stripeToken,
     }
 
     return <CheckoutContext.Provider value={contextValue}>
@@ -71,7 +75,7 @@ export default class Checkout extends Component<Props> {
           <EmailForm />
           <ShippingAddressForm />
           <ShippingRateChooser />
-          <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
+          <PaymentChooser />
           <Confirm />
         </div>
 
