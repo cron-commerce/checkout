@@ -24,9 +24,11 @@ export type SetStripeToken = (strikeToken: string) => any
 interface CheckoutContextInterface {
   customerEmail: string,
   setCustomerEmail: SetCustomerEmail,
+  setShippingAddress: SetAddress,
+  shippingAddress: Address,
 }
 
-export const CheckoutContext = createContext<CheckoutContextInterface>(null)
+export const CheckoutContext = createContext<CheckoutContextInterface>({} as any)
 
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
@@ -52,6 +54,8 @@ export default class Checkout extends Component<Props> {
     const contextValue = {
       customerEmail: this.state.customerEmail,
       setCustomerEmail: this.setCustomerEmail,
+      setShippingAddress: this.setShippingAddress,
+      shippingAddress: this.state.shippingAddress,
     }
 
     return <CheckoutContext.Provider value={contextValue}>
@@ -59,7 +63,7 @@ export default class Checkout extends Component<Props> {
         <div className='cell small-12 medium-7'>
           <Header />
           <EmailForm />
-          <ShippingAddressForm setShippingAddress={this.setShippingAddress} />
+          <ShippingAddressForm />
           <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} />
           <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
           <Confirm />
