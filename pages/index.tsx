@@ -22,6 +22,7 @@ export type SetShippingRate = (shippingRate: ShippingRate) => any
 export type SetStripeToken = (strikeToken: string) => any
 
 interface CheckoutContextInterface {
+  cart: Cart,
   customerEmail: string,
   setCustomerEmail: SetCustomerEmail,
   setShippingAddress: SetAddress,
@@ -57,6 +58,7 @@ export default class Checkout extends Component<Props> {
 
   public render() {
     const contextValue = {
+      cart: this.props.cart,
       customerEmail: this.state.customerEmail,
       setCustomerEmail: this.setCustomerEmail,
       setShippingAddress: this.setShippingAddress,

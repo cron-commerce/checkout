@@ -12,7 +12,9 @@ interface Address {
 interface Item {
   id: number,
   price: number,
+  quantity: number,
   title: string,
+  variant_id: number,
 }
 
 interface Cart {
