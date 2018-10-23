@@ -1,13 +1,9 @@
 import {Component} from 'react'
 
 import {handleInputChangeToStateUpdate} from '../lib/update-state'
-import {SetCustomerEmail} from '../pages/index'
+import {CheckoutContext, SetCustomerEmail} from '../pages/index'
 
-interface Props {
-  setCustomerEmail: SetCustomerEmail,
-}
-
-export default class EmailForm extends Component<Props> {
+export default class EmailForm extends Component<{}> {
   public state = {
     inputEmail: '',
   }
@@ -15,8 +11,11 @@ export default class EmailForm extends Component<Props> {
   private handleInputChangeToStateUpdate = handleInputChangeToStateUpdate.bind(this)
 
   public render() {
-    return (
-      <form>
+    return <CheckoutContext.Consumer>
+      {({customerEmail, setCustomerEmail}) => {
+        if (customerEmail) { return <div>Customer email: {customerEmail}</div> }
+
+        return <form onSubmit={this.handleSubmit(setCustomerEmail)}>
         <fieldset>
           <legend className='h2'>Customer Information</legend>
           <label>
@@ -24,7 +23,13 @@ export default class EmailForm extends Component<Props> {
             <input type='email' value={this.state.inputEmail} onChange={this.handleInputChangeToStateUpdate('inputEmail')} required />
           </label>
         </fieldset>
-      </form>
-    )
+        <button className='button' type='submit'>Submit</button>
+      </form>}}
+    </CheckoutContext.Consumer>
+  }
+
+  private handleSubmit = (setCustomerEmail: SetCustomerEmail) => (e: React.FormEvent) => {
+    e.preventDefault()
+    setCustomerEmail(this.state.inputEmail)
   }
 }

@@ -1,4 +1,4 @@
-import {Component} from 'react'
+import {Component, createContext} from 'react'
 
 import '../styles/index.scss'
 
@@ -21,6 +21,13 @@ export type SetCustomerEmail = (customerEmail: string) => any
 export type SetShippingRate = (shippingRate: ShippingRate) => any
 export type SetStripeToken = (strikeToken: string) => any
 
+interface CheckoutContextInterface {
+  customerEmail: string,
+  setCustomerEmail: SetCustomerEmail,
+}
+
+export const CheckoutContext = createContext<CheckoutContextInterface>(null)
+
 export default class Checkout extends Component<Props> {
   public static getInitialProps({req}): Props {
     return {
@@ -42,22 +49,29 @@ export default class Checkout extends Component<Props> {
   }
 
   public render() {
-    return <div className='grid-x'>
-      <div className='cell small-12 medium-7'>
-        <Header />
-        <EmailForm setCustomerEmail={this.setCustomerEmail} />
-        <ShippingAddressForm setShippingAddress={this.setShippingAddress} />
-        <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} />
-        <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
-        <Confirm />
-      </div>
+    const contextValue = {
+      customerEmail: this.state.customerEmail,
+      setCustomerEmail: this.setCustomerEmail,
+    }
 
-      <div className='cell show-for-medium medium-5'>
-        <h2>Order Summary</h2>
-        <Items cart={this.props.cart} />
-        <Prices />
+    return <CheckoutContext.Provider value={contextValue}>
+      <div className='grid-x'>
+        <div className='cell small-12 medium-7'>
+          <Header />
+          <EmailForm />
+          <ShippingAddressForm setShippingAddress={this.setShippingAddress} />
+          <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} />
+          <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
+          <Confirm />
+        </div>
+
+        <div className='cell show-for-medium medium-5'>
+          <h2>Order Summary</h2>
+          <Items cart={this.props.cart} />
+          <Prices />
+        </div>
       </div>
-    </div>
+    </CheckoutContext.Provider>
   }
 
   private setCustomerEmail: SetCustomerEmail = customerEmail => this.setState({...this.state, customerEmail})
