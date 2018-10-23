@@ -1,6 +1,6 @@
 import {Component} from 'react'
 
-import handleInputChange from '../lib/handle-input-change'
+import {handleInputChangeToStateUpdate} from '../lib/update-state'
 import {SetCustomerEmail} from '../pages/index'
 
 interface Props {
@@ -9,29 +9,22 @@ interface Props {
 
 export default class EmailForm extends Component<Props> {
   public state = {
-    inputs: {
-      email: '',
-    },
+    inputEmail: '',
   }
 
-  private handleInputChange = handleInputChange.bind(this)
+  private handleInputChangeToStateUpdate = handleInputChangeToStateUpdate.bind(this)
 
   public render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <fieldset>
           <legend className='h2'>Customer Information</legend>
           <label>
             Email
-            <input type='email' value={this.state.inputs.email} onChange={this.handleInputChange('email')} required />
+            <input type='email' value={this.state.inputEmail} onChange={this.handleInputChangeToStateUpdate('inputEmail')} required />
           </label>
         </fieldset>
       </form>
     )
-  }
-
-  private handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    this.props.setCustomerEmail(this.state.inputs.email)
   }
 }

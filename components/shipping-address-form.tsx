@@ -1,6 +1,6 @@
 import {Component} from 'react'
 
-import handleInputChange from '../lib/handle-input-change'
+import {handleInputChangeToStateUpdate} from '../lib/update-state'
 import {SetAddress} from '../pages/index'
 
 interface Props {
@@ -9,62 +9,55 @@ interface Props {
 
 export default class ShippingAddressForm extends Component<Props> {
   public state = {
-    inputs: {
-      address1: '',
-      address2: '',
-      city: '',
-      country: '',
-      firstName: '',
-      lastName: '',
-      province: '',
-      zip: '',
-    },
+    inputAddress1: '',
+    inputAddress2: '',
+    inputCity: '',
+    inputCountry: '',
+    inputFirstName: '',
+    inputLastName: '',
+    inputProvince: '',
+    inputZip: '',
   }
 
-  private handleInputChange = handleInputChange.bind(this)
+  private handleInputChangeToStateUpdate = handleInputChangeToStateUpdate.bind(this)
 
   public render() {
-    return <form onSubmit={this.handleFormSubmit}>
+    return <form>
       <fieldset>
         <legend className='h2'>Shipping Address</legend>
         <label>
           First Name
-          <input type='text' value={this.state.inputs.firstName} onChange={this.handleInputChange('firstName')} required />
+          <input type='text' value={this.state.inputFirstName} onChange={this.handleInputChangeToStateUpdate('inputFirstName')} required />
         </label>
         <label>
           Last Name
-          <input type='text' value={this.state.inputs.lastName} onChange={this.handleInputChange('lastName')} required />
+          <input type='text' value={this.state.inputLastName} onChange={this.handleInputChangeToStateUpdate('inputLastName')} required />
         </label>
         <label>
           Address
-          <input type='text' value={this.state.inputs.address1} onChange={this.handleInputChange('address1')} required />
+          <input type='text' value={this.state.inputAddress1} onChange={this.handleInputChangeToStateUpdate('inputAddress1')} required />
         </label>
         <label>
           Apt, Suite, etc.
-          <input type='text' value={this.state.inputs.address2} onChange={this.handleInputChange('address2')} />
+          <input type='text' value={this.state.inputAddress2} onChange={this.handleInputChangeToStateUpdate('inputAddress2')} />
         </label>
         <label>
           City
-          <input type='text' value={this.state.inputs.city} onChange={this.handleInputChange('city')} required />
+          <input type='text' value={this.state.inputCity} onChange={this.handleInputChangeToStateUpdate('inputCity')} required />
         </label>
         <label>
           Country
-          <input type='text' value={this.state.inputs.country} onChange={this.handleInputChange('country')} required />
+          <input type='text' value={this.state.inputCountry} onChange={this.handleInputChangeToStateUpdate('inputCountry')} required />
         </label>
         <label>
           State/Province
-          <input type='text' value={this.state.inputs.province} onChange={this.handleInputChange('province')} required />
+          <input type='text' value={this.state.inputProvince} onChange={this.handleInputChangeToStateUpdate('inputProvince')} required />
         </label>
         <label>
           Zip code
-          <input type='text' value={this.state.inputs.zip} onChange={this.handleInputChange('zip')} required />
+          <input type='text' value={this.state.inputZip} onChange={this.handleInputChangeToStateUpdate('inputZip')} required />
         </label>
       </fieldset>
     </form>
-  }
-
-  private handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    this.props.setShippingAddress(this.state.inputs)
   }
 }
