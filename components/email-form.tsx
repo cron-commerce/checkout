@@ -20,15 +20,14 @@ export default class EmailForm extends Component<Props> {
     return (
       <form onSubmit={this.handleSubmit}>
         <fieldset>
-          <legend>Shipping Address</legend>
+          <legend className='h2'>Customer Information</legend>
           <label>
             Email
             <input type='email' value={this.state.inputs.email} onChange={this.handleInputChange('email')} required />
           </label>
         </fieldset>
-        <button className='button' type='submit'>Confirm order</button>
       </form>
-    );
+    )
   }
 
   private handleSubmit = async (e: React.FormEvent) => {

@@ -12,8 +12,10 @@ class CreditCardForm extends Component<Props> {
   public render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <CardElement />
-        <button className='button' type='submit'>Confirm order</button>
+        <fieldset>
+          <legend className='h2'>Credit Card</legend>
+          <CardElement />
+        </fieldset>
       </form>
     );
   }

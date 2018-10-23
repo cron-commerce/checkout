@@ -1,1 +1,1 @@
-export default () => <div>Checkout</div>
+export default () => <h1>Checkout</h1>

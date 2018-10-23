@@ -20,7 +20,18 @@ const QUERY = gql`
 `
 
 export default class PaymentChooser extends Component<Props> {
+  public state = {
+    shouldRenderStripe: false,
+  }
+
+  public componentDidMount() {
+    this.setState({shouldRenderStripe: true})
+  }
+
   public render() {
+    // stripe cannot do SSR
+    if (!this.state.shouldRenderStripe) { return null }
+
     return <Query query={QUERY} variables={{name: this.props.shopName}}>
       {({data, loading, error}) => {
         if (loading) { return <div>loading...</div> }

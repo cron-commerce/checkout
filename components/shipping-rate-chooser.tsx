@@ -36,19 +36,18 @@ export default class ShippingRateChooser extends Component<Props> {
         if (error) { return <div>error</div> }
 
         return <form onSubmit={this.handleFormSubmit}>
-          <h2>Shipping Method</h2>
-          <div className='bordered'>
-            {data.shippingRates.map((shippingRate: ShippingRate) => <div className='flex-container' key={shippingRate.code}>
-              <div className='flex-child-shrink'>
-                <input id={shippingRate.code} name='shippingRate' onChange={this.handleShippingRateChange(shippingRate)} type='radio' />
-                <label htmlFor={shippingRate.code}>{shippingRate.title}</label>
-              </div>
-              {shippingRate.title}
-            </div>)}
-          </div>
-          <div>
-            <button className='button' disabled={!this.state.inputs.shippingRate} type='submit'>Next</button>
-          </div>
+          <fieldset>
+            <legend className='h2'>Shipping Rate</legend>
+            <div className='bordered'>
+              {data.shippingRates.map((shippingRate: ShippingRate) => <div className='flex-container' key={shippingRate.code}>
+                <div className='flex-child-shrink'>
+                  <input id={shippingRate.code} name='shippingRate' onChange={this.handleShippingRateChange(shippingRate)} type='radio' />
+                  <label htmlFor={shippingRate.code}>{shippingRate.title}</label>
+                </div>
+                {shippingRate.title}
+              </div>)}
+            </div>
+          </fieldset>
         </form>
       }}
     </Query>

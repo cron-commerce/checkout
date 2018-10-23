@@ -45,7 +45,11 @@ export default class Checkout extends Component<Props> {
     return <div className='grid-x'>
       <div className='cell small-12 medium-7'>
         <Header />
-        {this.renderStep()}
+        <EmailForm setCustomerEmail={this.setCustomerEmail} />
+        <ShippingAddressForm setShippingAddress={this.setShippingAddress} />
+        <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} />
+        <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
+        <Confirm />
       </div>
 
       <div className='cell show-for-medium medium-5'>
@@ -54,14 +58,6 @@ export default class Checkout extends Component<Props> {
         <Prices />
       </div>
     </div>
-  }
-
-  private renderStep = () => {
-    if (!this.state.customerEmail) { return <EmailForm setCustomerEmail={this.setCustomerEmail} /> }
-    if (!this.state.shippingAddress) { return <ShippingAddressForm setShippingAddress={this.setShippingAddress} /> }
-    if (!this.state.shippingRate) { return <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} /> }
-    if (!this.state.stripeToken) { return <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} /> }
-    return <Confirm />
   }
 
   private setCustomerEmail: SetCustomerEmail = customerEmail => this.setState({...this.state, customerEmail})

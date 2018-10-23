@@ -26,7 +26,7 @@ export default class ShippingAddressForm extends Component<Props> {
   public render() {
     return <form onSubmit={this.handleFormSubmit}>
       <fieldset>
-        <legend>Shipping Address</legend>
+        <legend className='h2'>Shipping Address</legend>
         <label>
           First Name
           <input type='text' value={this.state.inputs.firstName} onChange={this.handleInputChange('firstName')} required />
@@ -60,15 +60,6 @@ export default class ShippingAddressForm extends Component<Props> {
           <input type='text' value={this.state.inputs.zip} onChange={this.handleInputChange('zip')} required />
         </label>
       </fieldset>
-
-      <div className='flex-container align-justify'>
-        <div>
-          <a className='button' href='#'>Return to cart</a>
-        </div>
-        <div>
-          <button type='submit' className='button'>Submit</button>
-        </div>
-      </div>
     </form>
   }
 
