@@ -25,7 +25,10 @@ interface CheckoutContextInterface {
   customerEmail: string,
   setCustomerEmail: SetCustomerEmail,
   setShippingAddress: SetAddress,
+  setShippingRate: SetShippingRate,
   shippingAddress: Address,
+  shippingRate: ShippingRate,
+  shopName: string,
 }
 
 export const CheckoutContext = createContext<CheckoutContextInterface>({} as any)
@@ -55,7 +58,10 @@ export default class Checkout extends Component<Props> {
       customerEmail: this.state.customerEmail,
       setCustomerEmail: this.setCustomerEmail,
       setShippingAddress: this.setShippingAddress,
+      setShippingRate: this.setShippingRate,
       shippingAddress: this.state.shippingAddress,
+      shippingRate: this.state.shippingRate,
+      shopName: this.props.shopName,
     }
 
     return <CheckoutContext.Provider value={contextValue}>
@@ -64,7 +70,7 @@ export default class Checkout extends Component<Props> {
           <Header />
           <EmailForm />
           <ShippingAddressForm />
-          <ShippingRateChooser setShippingRate={this.setShippingRate} shippingAddress={this.state.shippingAddress} shopName={this.props.shopName} />
+          <ShippingRateChooser />
           <PaymentChooser setStripeToken={this.setStripeToken} shopName={this.props.shopName} />
           <Confirm />
         </div>

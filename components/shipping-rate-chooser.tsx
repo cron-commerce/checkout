@@ -2,13 +2,7 @@ import gql from 'graphql-tag'
 import {Component} from 'react'
 import {Query} from 'react-apollo'
 
-import {SetShippingRate} from '../pages/index'
-
-interface Props {
-  setShippingRate: SetShippingRate,
-  shippingAddress: Address,
-  shopName: string,
-}
+import {CheckoutContext} from '../pages/index'
 
 const QUERY = gql`
   query shippingRates($shopName: String!) {
@@ -22,45 +16,42 @@ const QUERY = gql`
   }
 `
 
-export default class ShippingRateChooser extends Component<Props> {
+export default class ShippingRateChooser extends Component<{}> {
   public state = {
-    inputs: {
-      shippingRate: null,
-    },
+    inputShippingRate: null,
   }
 
   public render() {
-    return <Query query={QUERY} variables={{shopName: this.props.shopName}}>
-      {({data, loading, error}) => {
-        if (loading) { return <div>loading...</div> }
-        if (error) { return <div>error</div> }
+    return <CheckoutContext.Consumer>
+      {({setShippingRate, shippingAddress, shopName}) => {
+        if (!shippingAddress) { return <div>Enter your shipping address</div> }
 
-        return <form onSubmit={this.handleFormSubmit}>
-          <fieldset>
-            <legend className='h2'>Shipping Rate</legend>
-            <div className='bordered'>
-              {data.shippingRates.map((shippingRate: ShippingRate) => <div className='flex-container' key={shippingRate.code}>
-                <div className='flex-child-shrink'>
-                  <input id={shippingRate.code} name='shippingRate' onChange={this.handleShippingRateChange(shippingRate)} type='radio' />
-                  <label htmlFor={shippingRate.code}>{shippingRate.title}</label>
+        return <Query query={QUERY} variables={{shopName}}>
+          {({data, loading, error}) => {
+            if (loading) { return <div>loading...</div> }
+            if (error) { return <div>error</div> }
+
+            return <form>
+              <fieldset>
+                <legend className='h2'>Shipping Rate</legend>
+                <div className='bordered'>
+                  {data.shippingRates.map((shippingRate: ShippingRate) => <div className='flex-container' key={shippingRate.code}>
+                    <div className='flex-child-shrink'>
+                      <input id={shippingRate.code} name='shippingRate' onChange={this.handleShippingRateChange(setShippingRate)(shippingRate)} type='radio' />
+                      <label htmlFor={shippingRate.code}>{shippingRate.title}</label>
+                    </div>
+                    {shippingRate.title}
+                  </div>)}
                 </div>
-                {shippingRate.title}
-              </div>)}
-            </div>
-          </fieldset>
-        </form>
+              </fieldset>
+            </form>
+          }}
+        </Query>
       }}
-    </Query>
+    </CheckoutContext.Consumer>
   }
 
-  private handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    this.props.setShippingRate(this.state.inputs.shippingRate)
-  }
-
-  private handleShippingRateChange = (shippingRate: ShippingRate) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const state = this.state
-    state.inputs.shippingRate = shippingRate
-    this.setState(state)
+  private handleShippingRateChange = (setShippingRate) => (shippingRate) => () => {
+    setShippingRate(shippingRate)
   }
 }
