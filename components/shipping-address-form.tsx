@@ -1,10 +1,10 @@
 import {Component} from 'react'
 
 import handleInputChange from '../lib/handle-input-change'
-import {setAddress} from '../pages/index'
+import {SetAddress} from '../pages/index'
 
 interface Props {
-  setShippingAddress: setAddress,
+  setShippingAddress: SetAddress,
 }
 
 export default class ShippingAddressForm extends Component<Props> {

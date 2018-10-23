@@ -2,10 +2,10 @@ import gql from 'graphql-tag'
 import {Component} from 'react'
 import {Query} from 'react-apollo'
 
-import {setShippingRate} from '../pages/index'
+import {SetShippingRate} from '../pages/index'
 
 interface Props {
-  setShippingRate: setShippingRate,
+  setShippingRate: SetShippingRate,
   shippingAddress: Address,
   shopName: string,
 }
