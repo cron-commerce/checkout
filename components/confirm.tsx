@@ -16,19 +16,19 @@ const CREATE_CHECKOUT = gql`
 export default class Confirm extends Component<{}> {
   public render() {
     return <CheckoutContext.Consumer>
-      {({cart, customerEmail, shopName}) => {
+      {({cart, customerEmail, shopName, stripeToken}) => {
         return <Mutation mutation={CREATE_CHECKOUT}>
           {(createCheckout, {data, loading, error}) => {
             if (loading) { return <div>loading...</div> }
-            if (error) { return <div>error</div> }
 
-            const mutationVariables = {shopName, input: {cart: transformCartForCheckout(cart), customerEmail}}
+            const mutationVariables = {shopName, input: {cart: transformCartForCheckout(cart), customerEmail, stripeToken}}
 
             return <form onSubmit={this.handleSubmit(createCheckout)(mutationVariables)}>
               <fieldset>
                 <legend className='h2'>Confirm</legend>
               </fieldset>
               <button className='button' type='submit'>Submit</button>
+              {error && <div>error, try again</div>}
             </form>
           }}
         </Mutation>

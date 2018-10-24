@@ -28,9 +28,15 @@ export default class PaymentChooser extends Component<{}> {
     if (!this.state.shouldRenderStripe) { return null }
 
     return <CheckoutContext.Consumer>
-      {({shippingRate, shopName, stripeToken}) => {
+      {({shippingRate, shopName, setStripeToken, stripeToken}) => {
         if (!shippingRate) { return <div>Select shipping rate</div> }
-        if (stripeToken) { return <div>Using stripe token {stripeToken}</div> }
+
+        if (stripeToken) {
+          return <div>
+            Using stripe token {stripeToken}
+            <button className='button' onClick={this.handleResetPaymentClick(setStripeToken)} type='button'>Reset</button>
+          </div>
+        }
 
         return <Query query={QUERY} variables={{name: shopName}}>
           {({data, loading, error}) => {
@@ -46,5 +52,9 @@ export default class PaymentChooser extends Component<{}> {
         </Query>
       }}
     </CheckoutContext.Consumer>
+  }
+
+  private handleResetPaymentClick = (setStripeToken) => (e) => {
+    setStripeToken(null)
   }
 }

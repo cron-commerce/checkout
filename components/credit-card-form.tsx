@@ -14,6 +14,7 @@ class CreditCardForm extends Component<Props> {
         return <form onSubmit={this.handleSubmit(setStripeToken)}>
           <fieldset>
             <legend className='h2'>Credit Card</legend>
+            {process.env.NODE_ENV === 'development' && <div>Test Visa: 4242424242424242</div>}
             <CardElement />
           </fieldset>
           <button className='button' type='submit'>Submit</button>
