@@ -7,6 +7,7 @@ import * as session from 'koa-session'
 import * as next from 'next'
 
 import initSession from './init-session'
+import serveWellKnownFolder from './serve-well-known-folder'
 
 const port = parseInt(process.env.PORT, 10)
 const dev = process.env.NODE_ENV !== 'production'
@@ -26,6 +27,7 @@ const main = async () => {
 
   app
   .use(logger('dev'))
+  .use(serveWellKnownFolder(app))
   .use(session(app))
   .use(bodyParser())
   .use(initSession())
